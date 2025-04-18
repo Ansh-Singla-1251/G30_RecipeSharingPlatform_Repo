@@ -1,0 +1,79 @@
+/* recipes/static/css/french.css */
+.french-recipes {
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+.french-header {
+    text-align: center;
+    margin-bottom: 2rem;
+    color: #333;
+}
+.recipe-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 2rem;
+    padding: 1rem;
+}
+.recipe-card {
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+    position: relative;
+}
+.recipe-card:hover {
+    transform: translateY(-5px);
+}
+.recipe-image {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 10px 10px 0 0;
+}
+.recipe-content {
+    padding: 1rem;
+}
+.recipe-title {
+    font-size: 1.2rem;
+    margin: 0.5rem 0;
+    color: #333;
+}
+.recipe-meta {
+    color: #666;
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+}
+.recipe-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 1rem;
+}
+.view-recipe {
+    background-color: #f39c12;
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+}
+.view-recipe:hover {
+    background-color: #e67e22;
+}
+.favorite-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.5rem;
+    color: #ccc;
+    transition: color 0.3s ease;
+}
+.favorite-btn.active {
+    color: #e74c3c;
+}
+.empty-state {
+    text-align: center;
+    padding: 2rem;
+    color: #666;
+}

@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block main_block %}
+    <div class="container mt-4">
+        <h2>Admin Dashboard</h2>
+
+        <a href="{% url 'add_recipe' %}" class="btn btn-success mb-3">Add Recipe</a>
+
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Category</th>
+                    <th>Occasion</th>
+                    <th>Price</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for recipe in recipes %}
+                <tr>
+                    <td>{{ recipe.title }}</td>
+                    <td>{{ recipe.category }}</td>
+                    <td>{{ recipe.occasion }}</td>
+                    <td>{{ recipe.price }}</td>
+                    <td>
+                        <a href="{% url 'edit_recipe' recipe_id=recipe.id %}" class="btn btn-warning btn-sm">Edit</a>
+                        <form method="POST" action="{% url 'delete_recipe' recipe_id=recipe.id %}" class="d-inline">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure?')">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title_block %}My Orders{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'foodorder/foodorder.css' %}">
+{% endblock %}
+{% block main_block %}
+<div class="main">
+    <h2>My Orders</h2>
+    {% if orders %}
+    <div class="orders-container">
+        {% for order in orders %}
+        <div class="order-box">
+            <div class="order-header">
+                <h3>{{ order.recipe.title }}</h3>
+                <span class="order-price">${{ order.total_price }}</span>
+            </div>
+            <div class="order-details">
+                <p><strong>Quantity:</strong> {{ order.quantity }}</p>
+                <p><strong>Status:</strong> {{ order.delivery_status }}</p>
+                <p><strong>Address:</strong> {{ order.delivery_address }}</p>
+                <p><strong>Ordered on:</strong> {{ order.created_at|date:"F d, Y, H:i" }}</p>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <p class="empty-cart">You have no orders yet.</p>
+    {% endif %}
+</div>
+{% endblock %}

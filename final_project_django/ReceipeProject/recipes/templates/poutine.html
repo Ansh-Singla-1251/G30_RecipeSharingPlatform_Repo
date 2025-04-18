@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title_block %}Poutine Recipe - Bitey Bites{% endblock %}
+
+
+
+{% block main_block %}
+<div class="container" style="display: flex; justify-content: center;">
+    <div style="width: 600px; background: white; padding: 50px; border-radius: 15px; box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); text-align: center; margin: 50px auto; border: 2px solid #f4a261;">
+        <h1>Poutine Recipe</h1>
+        <img src="{% static 'images/poutine.jpg' %}" alt="Poutine Image">
+        <div class="poutine-ingredients">
+            <h2>Ingredients</h2>
+            <ul>
+                <li>4 cups frozen fries</li>
+                <li>1 cup cheese curds</li>
+                <li>2 cups beef gravy</li>
+            </ul>
+        </div>
+        <div class="poutine-steps">
+            <h2>Instructions</h2>
+            <ol>
+                <li>Preheat oven to 425°F (220°C).</li>
+                <li>Bake fries according to package instructions.</li>
+                <li>Heat gravy in a saucepan until simmering.</li>
+                <li>Place fries on a plate, top with cheese curds, and pour hot gravy over.</li>
+                <li>Serve immediately. Enjoy!</li>
+            </ol>
+        </div>
+        <div class="poutine-video">
+            <h2>Watch the Recipe Video</h2>
+            
+            <iframe height="350" src="https://www.youtube.com/embed/8TDGswQSu7Q" title="Cheesy Poutine With Homemade French Fries (2 Ways)" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title_block %}Payment{% endblock %}
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'foodorder/foodorder.css' %}">
+{% endblock %}
+{% block main_block %}
+<div class="main">
+    <h2>Review and Confirm Order</h2>
+    {% if cart_items %}
+    <h3>Delivery Address</h3>
+    <p>
+        {{ selected_address.address_line1 }},
+        {% if selected_address.address_line2 %}{{ selected_address.address_line2 }},{% endif %}
+        {{ selected_address.city }}, {{ selected_address.state }},
+        {{ selected_address.postal_code }}, {{ selected_address.country }}
+    </p>
+    <h3>Order Details</h3>
+    {% for item in cart_items %}
+    <div class="cart-item-summary">
+        <p>{{ item.recipe.title }} x {{ item.quantity }} - ${{ item.get_total_price }}</p>
+    </div>
+    {% endfor %}
+    <h4>Total: ${{ total }}</h4>
+    <form method="post" action="{% url 'foodorder:thank_you' %}">
+        {% csrf_token %}
+        <button type="submit" class="btn">Confirm Order</button>
+    </form>
+    {% else %}
+    <p>No order to process.</p>
+    <a href="{% url 'foodorder:cart' %}" class="btn">Back to Cart</a>
+    {% endif %}
+</div>
+{% endblock %}

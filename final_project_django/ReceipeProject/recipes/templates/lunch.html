@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title_block %}Lunch Recipes - Bitey Bites{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/lunch.css' %}">
+{% endblock %}
+
+{% block main_block %}
+<section class="lunch-recipes">
+    <div class="lunch-header">
+        <h1>Delicious Lunch Recipes</h1>
+        <p>Have a break with some good refreshing lunch ideas!</p>
+    </div>
+    <div class="recipe-grid">
+        {% for recipe in lunch_recipes %}
+        <div class="recipe-card">
+            {% if recipe.image_filename %}
+            <img src="{% static 'images/' %}{{ recipe.image_filename }}" alt="{{ recipe.title }}" />
+            {% else %}
+            <img src="{% static 'default_image.jpg' %}" alt="Default Image" class="recipe-image" />
+            {% endif %}
+            <div class="recipe-content">
+                <h3 class="recipe-title">{{ recipe.title }}</h3>
+                <div class="recipe-meta">
+                    <p><i class="fas fa-utensils"></i> {{ recipe.category }}</p>
+                    {% if recipe.occasion %}
+                    <p><i class="fas fa-calendar"></i> {{ recipe.occasion }}</p>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="recipe-actions">
+                <a href="{% url 'recipe_detail' recipe.id %}" class="view-recipe">View Recipe</a>
+                {% if request.user.is_authenticated %}
+                <a href="{% url 'foodorder:checkout' recipe.id %}" class="view-recipe">Order Now</a>
+                <button class="favorite-btn {% if recipe in request.user.wishlist.all %}active{% endif %}"
+                    data-recipe-id="{{ recipe.id }}">
+                    <i class="fas fa-heart"></i>
+                </button>
+                {% else %}
+                <a href="{% url 'login'  %}" class="view-recipe">Order Now</a>
+                <button class="favorite-btn {% if recipe in request.user.wishlist.all %}active{% endif %}"
+                    data-recipe-id="{{ recipe.id }}">
+                    <i class="fas fa-heart"></i>
+                </button>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+        {% if not lunch_recipes %}
+        <div class="empty-state">
+            <i class="fas fa-utensils fa-3x"></i>
+            <h2>No lunch recipes available yet</h2>
+            <p>Check back soon for delicious lunch ideas!</p>
+        </div>
+        {% endif %}
+    </div>
+</section>
+
+<script>
+    $(document).ready(function () {
+        $(".favorite-btn").click(function (e) {
+            e.preventDefault();
+            var recipeId = $(this).data("recipe-id");
+            var button = $(this);
+            $.ajax({
+                url: "{% url 'add_to_wishlist' 0 %}".replace('0', recipeId),
+                type: "POST",
+                headers: { "X-CSRFToken": "{{ csrf_token }}" },
+                success: function (response) {
+                    if (response.status === "added") {
+                        button.addClass("active");
+                    } else if (response.status === "removed") {
+                        button.removeClass("active");
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error("Error:", error);
+                    alert("An error occurred. Please try again.");
+                }
+            });
+        });
+    });
+</script>
+{% endblock %}

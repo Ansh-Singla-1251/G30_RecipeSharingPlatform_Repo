@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title_block %}Delivery Address{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'foodorder/foodorder.css' %}">
+{% endblock %}
+{% block main_block %}
+<div class="main">
+    <h2>Delivery Address</h2>
+    {% if addresses %}
+    <h3>Select or Add Delivery Address</h3>
+    <div class="address-list">
+        {% for address in addresses %}
+        <div class="address-item">
+            <p>{{ address.address_line1 }}, {{ address.address_line2|default:'' }} {{ address.city }}, {{ address.state }}, {{ address.postal_code }}, {{ address.country }}</p>
+            <form method="post" style="display:inline;">
+                {% csrf_token %}
+                <input type="hidden" name="action" value="continue">
+                <input type="hidden" name="address_id" value="{{ address.id }}">
+                <button type="submit" class="btn" style="background-color: #f39c12;">Continue</button>
+            </form>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    <h3>Add New Address</h3>
+    <form method="post">
+        {% csrf_token %}
+        <input type="hidden" name="action" value="add_new">
+        <div class="form-group">
+            <label for="address_line1">Address Line 1:</label>
+            <input type="text" name="address_line1" id="address_line1" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <label for="address_line2">Address Line 2:</label>
+            <input type="text" name="address_line2" id="address_line2" class="form-control">
+        </div>
+        <div class="form-group">
+            <label for="city">City:</label>
+            <input type="text" name="city" id="city" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <label for="state">State:</label>
+            <input type="text" name="state" id="state" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <label for="postal_code">Postal Code:</label>
+            <input type="text" name="postal_code" id="postal_code" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <label for="country">Country:</label>
+            <input type="text" name="country" id="country" class="form-control" required>
+        </div>
+        <button type="submit" class="btn" style="background-color: #f39c12;">Save New Address</button>
+    </form>
+</div>
+{% endblock %}

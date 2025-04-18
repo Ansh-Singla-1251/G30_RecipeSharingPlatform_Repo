@@ -1,0 +1,52 @@
+{% extends "base.html" %} {% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{{ recipe.title }}</title>
+    <link rel="stylesheet" href="{% static 'recipe_detail.css' %}" />
+  </head>
+
+  <body>
+    {% block main_block %}
+    <div class="main" style="max-width: 800px; margin: 50px auto; background: #fff; padding: 30px; border-radius: 15px; box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1); text-align: center; border: 2px solid #f4a261;">
+      <h2 style="color: #f4a261; font-size: 2.5em; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 2px;">{{ recipe.title }}</h2>
+      {% if recipe.image_filename %}
+      <img
+        src="{% static 'images/' %}{{ recipe.image_filename }}"
+        alt="{{ recipe.title }}"
+        style="border-radius: 10px; max-width: 100%; height: auto; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); margin-bottom: 20px;"
+      />
+      {% endif %}
+
+      <p style="font-size: 1.2em; color: #333; margin: 15px 0; background: #f9f9f9; padding: 10px; border-radius: 5px; text-align: left;" data-heading="Price:"><strong>Price:</strong> ${{ recipe.price|default:"N/A" }}</p>
+      <p style="font-size: 1.2em; color: #333; margin: 15px 0; background: #f9f9f9; padding: 10px; border-radius: 5px; text-align: left;" data-heading="Ingredients:"><strong>Ingredients:</strong> {{ recipe.ingredients|linebreaks }}</p>
+      <p style="font-size: 1.2em; color: #333; margin: 15px 0; background: #f9f9f9; padding: 10px; border-radius: 5px; text-align: left;" data-heading="Instructions:"><strong>Instructions:</strong> {{ recipe.instructions|linebreaks }}</p>
+      {% if video_id %}
+      <h3 style="color: #f4a261; font-size: 1.5em; margin-top: 20px;">Watch Tutorial:</h3>
+      <iframe
+        width="560"
+        height="315"
+        src="https://www.youtube.com/embed/{{ video_id }}"
+        frameborder="0"
+        allowfullscreen
+        style="border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);"
+      ></iframe>
+      {% elif recipe.youtube_link %}
+      <p class="text-warning" style="color: #e74c3c; font-size: 1.1em; margin-top: 10px;">Invalid YouTube link format.</p>
+      {% endif %}
+      <div class="button-container" style="margin-top: 20px;">
+        {% if user.is_authenticated %}
+        <a href="{% url 'foodorder:checkout' recipe.id %}" class="btn btn-order" style="display: inline-block; padding: 10px 20px; margin: 5px; background: #f4a261; color: #fff; text-decoration: none; border-radius: 5px; font-weight: bold; transition: background 0.3s;">Order Now</a>
+        <a href="{% url 'foodorder:add_to_cart' recipe.id %}" class="btn btn-cart" style="display: inline-block; padding: 10px 20px; margin: 5px; background: #f4a261; color: #fff; text-decoration: none; border-radius: 5px; font-weight: bold; transition: background 0.3s;">Add to Cart</a>
+        {% else %}
+        <a href="{% url 'login' %}" class="btn btn-order" style="display: inline-block; padding: 10px 20px; margin: 5px; background: #f4a261; color: #fff; text-decoration: none; border-radius: 5px; font-weight: bold; transition: background 0.3s;">Order Now</a>
+        <a href="{% url 'login' %}" class="btn btn-cart" style="display: inline-block; padding: 10px 20px; margin: 5px; background: #f4a261; color: #fff; text-decoration: none; border-radius: 5px; font-weight: bold; transition: background 0.3s;">Add to Cart</a>
+        {% endif %}
+      </div>
+    </div>
+    {% endblock %}
+  </body>
+</html>

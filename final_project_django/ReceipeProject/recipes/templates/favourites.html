@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block main_block %}
+<div class="container mt-4">
+    
+    <h1 class="mb-4">My Favorite Recipes</h1>
+    {% if recipes %}
+    <div class="row">
+        {% for recipe in recipes %}
+        <div class="col-md-4 col-sm-6 mb-4">
+            <div class="recipe-card">
+                {% if recipe.image_filename %}
+                <img src="{% static 'images/'|add:recipe.image_filename %}" alt="{{ recipe.title }}" class="recipe-image" />
+                {% else %}
+                <img src="{% static 'default_image.jpg' %}" alt="Default Image" class="recipe-image" />
+                {% endif %}
+               
+            
+            <div class="recipe-content">
+                <div class="recipe-category">{{ recipe.category }}</div>
+                <h2 class="recipe-title">{{ recipe.title }}</h2>
+            
+        
+        <div class="favorite-actions">
+            <form action="{% url 'remove_from_wishlist' recipe.id %}" method="post">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger btn-sm">
+                    <i class="fas fa-trash"></i> Remove
+                </button>
+            </form>
+        </div></div></div></div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="alert alert-info">You haven't added any recipes to your favorites yet.</div>
+    {% endif %}
+</div>
+{% endblock %}

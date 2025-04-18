@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title_block %}Samosa Recipe - Bitey Bites{% endblock %}
+
+{% block main_block %}
+<div class="samosa-container" style="display: flex; justify-content: center;">
+    <div style="width: 600px; background: white; padding: 50px; border-radius: 15px; box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); text-align: center; margin: 50px auto; border: 2px solid #f4a261;">
+        <h1>Samosa Recipe</h1>
+        <img src="{% static 'images/samosa.jpg' %}" alt="Samosa Image">
+        <div class="samosa-ingredients">
+            <h2>Ingredients</h2>
+            <ul>
+                <li>1 cup flour</li>
+                <li>2 eggs</li>
+                <li>1/2 cup sugar</li>
+                <li>1 tsp vanilla extract</li>
+                <li>1/2 cup milk</li>
+            </ul>
+        </div>
+        <div class="samosa-steps">
+            <h2>Instructions</h2>
+            <ol>
+                <li>Preheat oven to 350°F (175°C).</li>
+                <li>Mix flour, sugar, and eggs in a bowl.</li>
+                <li>Add vanilla extract and milk, stirring until smooth.</li>
+                <li>Pour mixture into a greased baking dish.</li>
+                <li>Bake for 25-30 minutes until golden brown.</li>
+                <li>Let cool before serving. Enjoy!</li>
+            </ol>
+        </div>
+        <div class="samosa-video">
+            <h2>Watch the Recipe Video</h2>
+            <iframe height="350" src="https://www.youtube.com/embed/W0zDu1o74Uc" frameborder="0" allowfullscreen></iframe>
+        </div>
+    </div>
+</div>
+{% endblock %}

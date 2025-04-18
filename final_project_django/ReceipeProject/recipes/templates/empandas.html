@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title_block %}Empanadas Recipe - Bitey Bites{% endblock %}
+
+
+
+{% block main_block %}
+<div class="container" style="display: flex; justify-content: center;">
+    <div style="width: 600px; background: white; padding: 50px; border-radius: 15px; box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); text-align: center; margin: 50px auto; border: 2px solid #f4a261;">
+        <h1>Empanadas Recipe</h1>
+        <img src="{% static 'images/empandas.jpg' %}" alt="Empanadas Image">
+        <div class="empanadas-ingredients">
+            <h2>Ingredients</h2>
+            <ul>
+                <li>2 cups flour</li>
+                <li>1/2 lb ground beef</li>
+                <li>1 onion, chopped</li>
+                <li>1 tsp paprika</li>
+                <li>Oil for frying</li>
+            </ul>
+        </div>
+        <div class="empanadas-steps">
+            <h2>Instructions</h2>
+            <ol>
+                <li>Mix flour with water to form dough; let rest.</li>
+                <li>Cook beef with onion and paprika until browned.</li>
+                <li>Roll out dough, cut circles, and fill with beef mixture.</li>
+                <li>Fold and seal edges, then fry in hot oil until golden.</li>
+                <li>Serve warm. Enjoy!</li>
+            </ol>
+        </div>
+        <div class="empanadas-video">
+            <h2>Watch the Recipe Video</h2>
+            <iframe height="350" src="https://www.youtube.com/embed/RRNVLC6IAv4" title="How to Make Empanadas | So Delicious and Easy!" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        </div>
+    </div>
+</div>
+{% endblock %}

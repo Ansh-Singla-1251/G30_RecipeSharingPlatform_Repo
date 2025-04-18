@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title_block %}Chinese Recipes - Bitey Bites{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/chinese.css' %}">
+{% endblock %}
+
+{% block main_block %}
+<section class="chinese-recipes">
+    <div class="chinese-header">
+        <h1>Delicious Chinese Recipes</h1>
+    </div>
+    <div class="recipe-grid">
+        {% for recipe in chinese_recipes %}
+        <div class="recipe-card">
+            {% if recipe.image_filename %}
+            <img src="{% static 'images/' %}{{ recipe.image_filename }}" alt="{{ recipe.title }}" />
+            {% else %}
+            <img src="{% static 'default_image.jpg' %}" alt="Default Image" class="recipe-image" />
+            {% endif %}
+            <div class="recipe-content">
+                <h3 class="recipe-title">{{ recipe.title }}</h3>
+                <div class="recipe-meta">
+                    <p><i class="fas fa-utensils"></i> {{ recipe.category }}</p>
+                    {% if recipe.occasion %}
+                    <p><i class="fas fa-calendar"></i> {{ recipe.occasion }}</p>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="recipe-actions">
+                <a href="{% url 'recipe_detail' recipe.id %}" class="view-recipe">View Recipe</a>
+                {% if request.user.is_authenticated %}
+                <a href="{% url 'foodorder:checkout' recipe.id %}" class="view-recipe">Order Now</a>
+                <button class="favorite-btn {% if recipe in request.user.wishlist.all %}active{% endif %}"
+                    data-recipe-id="{{ recipe.id }}">
+                    <i class="fas fa-heart"></i>
+                </button>
+                {% else %}
+                <a href="{% url 'login'  %}" class="view-recipe">Order Now</a>
+                <button class="favorite-btn {% if recipe in request.user.wishlist.all %}active{% endif %}"
+                    data-recipe-id="{{ recipe.id }}">
+                    <i class="fas fa-heart"></i>
+                </button>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+        {% if not chinese_recipes %}
+        <div class="empty-state">
+            <i class="fas fa-utensils fa-3x"></i>
+            <h2>No recipes available yet</h2>
+            <p>Check back soon for delicious recipe ideas!</p>
+        </div>
+        {% endif %}
+    </div>
+</section>
+
+<script>
+    $(document).ready(function () {
+        $(".favorite-btn").click(function () {
+            var button = $(this);
+            var recipeId = button.data("recipe-id");
+            $.ajax({
+                url: "{% url 'add_to_wishlist' 0 %}".replace('0', recipeId),
+                type: "POST",
+                contentType: "application/json",
+                headers: { "X-CSRFToken": "{{ csrf_token }}" },
+                success: function (response) {
+                    button.toggleClass("active", response.status === "added");
+                },
+                error: function () {
+                    alert("An error occurred. Please try again.");
+                }
+            });
+        });
+    });
+</script>
+{% endblock %}

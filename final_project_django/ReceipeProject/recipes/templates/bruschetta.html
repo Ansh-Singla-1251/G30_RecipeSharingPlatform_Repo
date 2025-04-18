@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title_block %}Bruschetta Recipe - Bitey Bites{% endblock %}
+
+
+{% block main_block %}
+<div class="bruschetta-container" style="display: flex; justify-content: center;">
+    <div style="width: 600px; background: white; padding: 50px; border-radius: 15px; box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); text-align: center; margin: 50px auto; border: 2px solid #f4a261;">
+        
+        <h1>Bruschetta Recipe</h1>
+        <img src="{% static 'images/bruschetta.jpg' %}" alt="Bruschetta Image">
+        <div class="bruschetta-ingredients">
+            <h2>Ingredients</h2>
+            <ul>
+                <li>1 baguette</li>
+                <li>2 cups diced tomatoes</li>
+                <li>1/4 cup olive oil</li>
+                <li>2 cloves garlic</li>
+                <li>1/4 cup fresh basil</li>
+            </ul>
+        </div>
+        <div class="bruschetta-steps">
+            <h2>Instructions</h2>
+            <ol>
+                <li>Preheat oven to 400°F (200°C).</li>
+                <li>Slice baguette and brush with olive oil.</li>
+                <li>Toast in oven for 5-7 minutes.</li>
+                <li>Mix tomatoes, garlic, and basil with remaining oil.</li>
+                <li>Spoon mixture onto toasted bread. Serve immediately!</li>
+            </ol>
+        </div>
+        <div class="bruschetta-video">
+            <h2>Watch the Recipe Video</h2>
+            <iframe height="360" src="https://www.youtube.com/embed/Q3xg35pcLyo" title="How to Make Italian BRUSCHETTA - Easy Appetizer" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        </div>
+    </div>
+</div>
+{% endblock %}

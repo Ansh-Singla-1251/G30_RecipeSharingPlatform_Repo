@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title_block %}Falafel Recipe - Bitey Bites{% endblock %}
+
+
+
+{% block main_block %}
+<div class="container" style="display: flex; justify-content: center;">
+    <div style="width: 600px; background: white; padding: 50px; border-radius: 15px; box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); text-align: center; margin: 50px auto; border: 2px solid #f4a261;">
+        <h1>Falafel Recipe</h1>
+        <img src="{% static 'images/falafel.jpg' %}" alt="Falafel Image">
+        <div class="falafel-ingredients">
+            <h2>Ingredients</h2>
+            <ul>
+                <li>1 cup dried chickpeas</li>
+                <li>1/2 cup parsley</li>
+                <li>2 cloves garlic</li>
+                <li>1 tsp cumin</li>
+                <li>Oil for frying</li>
+            </ul>
+        </div>
+        <div class="falafel-steps">
+            <h2>Instructions</h2>
+            <ol>
+                <li>Soak chickpeas overnight.</li>
+                <li>Blend chickpeas, parsley, garlic, and cumin into a coarse paste.</li>
+                <li>Form into balls and flatten slightly.</li>
+                <li>Heat oil and fry until golden brown, about 3-4 minutes per side.</li>
+                <li>Serve with tahini sauce. Enjoy!</li>
+            </ol>
+        </div>
+        <div class="falafel-video">
+            <h2>Watch the Recipe Video</h2>
+            <iframe height="350" src="https://www.youtube.com/embed/NZcWedPKysk" title="How to Make Falafel | Falafel Recipe" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        </div>
+    </div>
+</div>
+{% endblock %}

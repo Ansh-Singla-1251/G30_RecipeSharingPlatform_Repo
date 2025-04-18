@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title_block %}Cart{% endblock %}
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'foodorder/foodorder.css' %}">
+{% endblock %}
+{% block main_block %}
+<div class="main">
+    <h2>Your Cart</h2>
+    {% if cart_items %}
+    <div class="cart-items">
+        {% for item in cart_items %}
+        <div class="cart-item">
+            {% if item.recipe.image_filename %}
+                <img src="{% static 'images/'|add:item.recipe.image_filename %}" alt="{{ item.recipe.title }}" class="cart-item-image">
+            {% else %}
+                <img src="{% static 'default_image.jpg' %}" alt="Default Image" class="cart-item-image">
+            {% endif %}
+            <div class="cart-item-details">
+                <h4>{{ item.recipe.title }}</h4>
+                <p>Price: ${{ item.get_total_price }}</p>
+                <div class="quantity-controls">
+                    <form method="post" style="display:inline;" data-item-id="{{ item.id }}">
+                        {% csrf_token %}
+                        <input type="hidden" name="increase" value="true">
+                        <button type="submit" class="quantity-btn">+</button>
+                    </form>
+                    <span class="quantity">{{ item.quantity }}</span>
+                    <form method="post" style="display:inline;" data-item-id="{{ item.id }}">
+                        {% csrf_token %}
+                        <input type="hidden" name="decrease" value="true">
+                        <button type="submit" class="quantity-btn">-</button>
+                    </form>
+                    <form method="post" style="display:inline;" data-item-id="{{ item.id }}">
+                        {% csrf_token %}
+                        <input type="hidden" name="delete" value="true">
+                        <button type="submit" class="quantity-btn delete-btn">Delete</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <div class="cart-total">
+        <h3>Total: ${{ total }}</h3>
+        <a href="{% url 'foodorder:delivery_address' %}" class="btn" style="background-color: #f39c12;">Proceed to Checkout</a>
+    </div>
+    {% else %}
+    <p>Your cart is empty.</p>
+    <a href="{% url 'index' %}" class="btn" style="background-color: #f39c12;">Explore More</a>
+    {% endif %}
+</div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('.quantity-controls form').submit(function(e) {
+            e.preventDefault();
+            var form = $(this);
+            var itemId = form.data('item-id');
+            $.ajax({
+                url: "{% url 'foodorder:cart' %}",
+                method: 'POST',
+                data: form.serialize() + '&item_id=' + itemId,
+                success: function(response) {
+                    location.reload();
+                },
+                error: function(xhr, status, error) {
+                    alert("Error updating cart: " + error);
+                }
+            });
+        });
+    });
+</script>
+{% endblock %}

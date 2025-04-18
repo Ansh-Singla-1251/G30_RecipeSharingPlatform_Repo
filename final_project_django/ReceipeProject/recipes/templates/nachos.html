@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title_block %}Nachos Recipe - Bitey Bites{% endblock %}
+
+
+{% block main_block %}
+<div class="container" style="display: flex; justify-content: center;">
+    <div style="width: 600px; background: white; padding: 50px; border-radius: 15px; box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); text-align: center; margin: 50px auto; border: 2px solid #f4a261;">
+        <h1>Nachos Recipe</h1>
+        <img src="{% static 'images/nachos.jpg' %}" alt="Nachos Image">
+        <div class="nachos-ingredients">
+            <h2>Ingredients</h2>
+            <ul>
+                <li>1 bag tortilla chips</li>
+                <li>1 cup shredded cheddar cheese</li>
+                <li>1/2 cup black beans</li>
+                <li>1/4 cup diced tomatoes</li>
+                <li>1/4 cup sour cream</li>
+            </ul>
+        </div>
+        <div class="nachos-steps">
+            <h2>Instructions</h2>
+            <ol>
+                <li>Preheat oven to 350°F (175°C).</li>
+                <li>Spread tortilla chips on a baking sheet.</li>
+                <li>Sprinkle cheese and black beans over chips.</li>
+                <li>Bake for 10-15 minutes until cheese melts.</li>
+                <li>Top with tomatoes and sour cream. Serve hot!</li>
+            </ol>
+        </div>
+        <div class="nachos-video">
+            <h2>Watch the Recipe Video</h2>
+            <iframe height="350" src="https://www.youtube.com/embed/rbHIj9kMBYY" frameborder="0" allowfullscreen></iframe>
+        </div>
+    </div>
+</div>
+{% endblock %}

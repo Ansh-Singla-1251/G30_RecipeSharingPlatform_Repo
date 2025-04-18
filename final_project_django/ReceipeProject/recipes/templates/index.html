@@ -1,0 +1,135 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title_block %}Bitey Bites{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/index.css' %}">
+{% endblock %}
+
+{% block main_block %}
+<!-- Carousel -->
+<div id="carouselExampleDark" class="carousel carousel-dark slide" data-bs-ride="carousel">
+  <div class="carousel-indicators">
+    <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+    <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="1" aria-label="Slide 2"></button>
+    <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="2" aria-label="Slide 3"></button>
+  </div>
+  <div class="carousel-inner">
+    <div class="carousel-item active">
+      <img src="{% static 'images/c4.jpg' %}" class="d-block w-100" alt="Home">
+      <div class="carousel-caption d-none d-md-block fs-1" style="color: white">
+        <h2>Welcome to Bitey Bites</h2>
+        <p>Discover delicious recipes!</p>
+      </div>
+    </div>
+    <div class="carousel-item">
+      <img src="{% static 'images/c3.png' %}" class="d-block w-100" alt="Food 1">
+      <div class="carousel-caption d-none d-md-block fs-1" style="color: white">
+        <h2>Explore New Flavors</h2>
+        <p>Try our featured dishes.</p>
+      </div>
+    </div>
+    <div class="carousel-item">
+      <img src="{% static 'images/pic3.jpg' %}" class="d-block w-100" alt="Food 2">
+      <div class="carousel-caption d-none d-md-block fs-1" style="color: white">
+        <h2>Order Now</h2>
+        <p>Fast and fresh delivery!</p>
+      </div>
+    </div>
+  </div>
+  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Previous</span>
+  </button>
+  <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Next</span>
+  </button>
+</div>
+
+<section class="hero text-center my-4">
+  <h1>Find Everyday Cooking Inspiration</h1>
+  <p>Discover thousands of recipes from around the world.</p>
+</section>
+
+
+<div class="container text-center my-3">
+  <form method="GET" class="d-inline-block">
+    <label for="veg_filter" class="form-label fw-bold">Filter:</label>
+    <select name="veg" id="veg_filter" class="form-select d-inline-block w-auto mx-2">
+      <option value="">All</option>
+      <option value="1" {% if selected_veg == "1" %}selected{% endif %}>Veg</option>
+      <option value="0" {% if selected_veg == "0" %}selected{% endif %}>Non-Veg</option>
+    </select>
+    <button type="submit" class="btn btn-primary">Apply</button>
+  </form>
+</div>
+
+
+<div class="recipe-grid">
+  {% for recipe in recipes %}
+  <div class="recipe-card">
+    {% if recipe.image_filename %}
+      <img src="{% static 'images/'|add:recipe.image_filename %}" alt="{{ recipe.title }}" class="recipe-image" />
+    {% else %}
+      <img src="{% static 'default_image.jpg' %}" alt="Default Image" class="recipe-image" />
+    {% endif %}
+    <h3>{{ recipe.title }}</h3>
+    <p><strong>Category:</strong> {{ recipe.category }}</p>
+    <p>{{ recipe.description|truncatechars:60 }}</p>
+    
+    <div class="button-container">
+      <a href="{% url 'recipe_detail' recipe.id %}" class="view-recipe">View Recipe</a>
+      {% if request.user.is_authenticated %}
+      <a href="{% url 'foodorder:checkout' recipe.id %}" class="view-recipe">Order Now</a>
+      <a href="#" class="wishlist-icon" data-recipe-id="{{ recipe.id }}">
+        <i class="fa-regular fa-heart {% if recipe in request.user.wishlist.all %}fa-solid pink{% endif %}"></i>
+      </a>
+      {% else %}
+      <a href="{% url 'login' %}" class="view-recipe">Order Now</a>
+      <a href="{% url 'login' %}" class="wishlist-icon" data-recipe-id="{{ recipe.id }}">
+        <i class="fa-regular fa-heart"></i>
+      </a>
+      {% endif %}
+    </div>
+  </div>
+  {% empty %}
+  <p>No recipes found.</p>
+  {% endfor %}
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+  $(document).ready(function () {
+    $(".wishlist-icon").click(function (e) {
+      e.preventDefault();
+      var recipeId = $(this).data("recipe-id");
+      var icon = $(this).find("i");
+
+      $.ajax({
+        url: "/add_to_wishlist/" + recipeId + "/",
+        type: "POST",
+        headers: {
+          "X-CSRFToken": "{{ csrf_token }}",
+        },
+        success: function (response) {
+          if (response.status === "added") {
+            icon.removeClass("fa-regular fa-heart")
+                .addClass("fa-solid fa-heart")
+                .css("color", "red");
+          } else if (response.status === "removed") {
+            icon.removeClass("fa-solid fa-heart")
+                .addClass("fa-regular fa-heart")
+                .css("color", "inherit");
+          }
+        },
+        error: function (xhr, status, error) {
+          console.error("Error:", error);
+          alert("An error occurred. Please try again.");
+        }
+      });
+    });
+  });
+</script>
+{% endblock %}

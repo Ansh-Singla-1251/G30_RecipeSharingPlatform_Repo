@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title_block %}Cuisine & Snack Wheel - Bitey Bites{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/wheel.css' %}">
+{% endblock %}
+
+{% block main_block %}
+<div class="wheel-container">
+    <h2>Cuisines</h2>
+    <div class="wheel" id="cuisine-wheel">
+        <div class="wheel-item" data-recipe="Italian"><a href="{% url 'italian' %}">Italian</a></div>
+        <div class="wheel-item" data-recipe="Mexican"><a href="{% url 'mexican' %}">Mexican</a></div>
+        <div class="wheel-item" data-recipe="Chinese"><a href="{% url 'chinese' %}">Chinese</a></div>
+        <div class="wheel-item" data-recipe="Indian"><a href="{% url 'indian' %}">Indian</a></div>
+        <div class="wheel-item" data-recipe="Japanese"><a href="{% url 'japanese' %}">Japanese</a></div>
+        <div class="wheel-item" data-recipe="French"><a href="{% url 'french' %}">French</a></div>
+        <div class="wheel-item" data-recipe="Thai"><a href="{% url 'thai' %}">Thai</a></div>
+        <div class="wheel-item" data-recipe="Mediterranean"><a href="{% url 'mediterranean' %}">Mediterranean</a></div>
+    </div>
+    <h2>Snacks</h2>
+    <div class="wheel" id="snack-wheel">
+        <div class="wheel-item" data-recipe="Nachos"><a href="{% url 'nachos' %}">Nachos</a></div>
+        <div class="wheel-item" data-recipe="Spring Rolls"><a href="{% url 'spring_roll' %}">Spring Rolls</a></div>
+        <div class="wheel-item" data-recipe="Samosa"><a href="{% url 'samosa' %}">Samosa</a></div>
+        <div class="wheel-item" data-recipe="Bruschetta"><a href="{% url 'bruschetta' %}">Bruschetta</a></div>
+        <div class="wheel-item" data-recipe="Falafel"><a href="{% url 'falafel' %}">Falafel</a></div>
+        <div class="wheel-item" data-recipe="Poutine"><a href="{% url 'poutine' %}">Poutine</a></div>
+        <div class="wheel-item" data-recipe="Empanadas"><a href="{% url 'empandas' %}">Empanadas</a></div>
+        <div class="wheel-item" data-recipe="Dim Sum"><a href="{% url 'dim_sum' %}">Dim Sum</a></div>
+    </div>
+</div>
+<script>
+    document.querySelectorAll(".wheel-item").forEach((item) => {
+        item.addEventListener("click", () => {
+            const recipe = item.getAttribute("data-recipe");
+            // Optional: Redirect to a dynamic recipe page if implemented
+            // window.location.href = `/recipe/${recipe}`;
+        });
+    });
+</script>
+{% endblock %}

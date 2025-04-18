@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title_block %}Register{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/register.css' %}">
+{% endblock %}
+
+{% block main_block %}
+<div class="main">
+    <h2>Sign Up</h2>
+    <form method="POST" class="needs-validation" novalidate id="registerForm">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="name" class="form-label">Full Name</label>
+            <input type="text" name="name" id="name" class="form-control" required>
+        </div>
+        <div class="mb-3">
+            <label for="email" class="form-label">Email</label>
+            <input type="email" name="email" id="email" class="form-control" required>
+        </div>
+        <div class="mb-3">
+            <label for="password" class="form-label">Password</label>
+            <input type="password" name="password" id="password" class="form-control" required>
+        </div>
+        <div class="mb-3">
+            <label for="confirm_password" class="form-label">Confirm Password</label>
+            <input type="password" name="confirm_password" id="confirm_password" class="form-control" required>
+        </div>
+        <div class="mb-3">
+            <label for="mobile" class="form-label">Mobile Number</label>
+            <input type="tel" name="mobile" id="mobile" class="form-control" required>
+        </div>
+        <button type="submit" class="btn btn-primary w-100">Register</button>
+        <p class="mt-3">Already registered? <a href="{% url 'login' %}" style="color: #f39c12;">Login here</a></p>
+    </form>
+</div>
+<script>
+    document.getElementById('registerForm').addEventListener('submit', function(event) {
+        var email = document.getElementById('email').value;
+        var password = document.getElementById('password').value;
+        var confirmPassword = document.getElementById('confirm_password').value;
+        var mobile = document.getElementById('mobile').value;
+
+        // Email validation
+        var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            event.preventDefault();
+            alert('Please enter a valid email address (e.g., example@domain.com)');
+            return;
+        }
+
+        // Password validation
+        var passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
+        if (!passwordRegex.test(password)) {
+            event.preventDefault();
+            alert('Password must be at least 8 characters long and include both letters and numbers.');
+            return;
+        }
+
+        // Confirm password match
+        if (password !== confirmPassword) {
+            event.preventDefault();
+            alert('Passwords do not match!');
+            return;
+        }
+
+        // Mobile validation
+        if (!/^\d{10}$/.test(mobile)) {
+            event.preventDefault();
+            alert('Mobile number must be exactly 10 digits.');
+            return;
+        }
+    });
+</script>
+{% endblock %}

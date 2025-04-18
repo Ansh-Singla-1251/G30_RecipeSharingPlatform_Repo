@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title_block %}Thank You{% endblock %}
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'foodorder/foodorder.css' %}">
+{% endblock %}
+{% block main_block %}
+<div class="main text-center">
+    <h2>Thank You</h2>
+    <p>Thank you for choosing Bitey Bites. Hope you enjoy your food!</p>
+</div>
+{% endblock %}

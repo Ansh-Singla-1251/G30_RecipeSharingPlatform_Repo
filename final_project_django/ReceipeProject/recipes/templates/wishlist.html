@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title_block %}My Wishlist - Bitey Bites{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/wishlist.css' %}">
+{% endblock %}
+
+{% block main_block %}
+<div class="wishlist-container">
+    <h2>My Wishlist</h2>
+    {% if wishlist_items %}
+    <div class="recipe-grid">
+        {% for recipe in wishlist_items %}
+        <div class="recipe-card">
+            <img src="{{ recipe.image_url }}" alt="{{ recipe.title }}" />
+            <h3>{{ recipe.title }}</h3>
+            <p class="category">{{ recipe.category }}</p>
+            <p class="occasion">{{ recipe.occasion }}</p>
+            <a href="{% url 'recipe_detail' recipe.id %}" class="view-btn">View Recipe</a>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <p class="empty-message">Your wishlist is empty.</p>
+    {% endif %}
+</div>
+{% endblock %}

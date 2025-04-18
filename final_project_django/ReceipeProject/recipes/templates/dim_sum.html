@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title_block %}Dim Sum Recipe - Bitey Bites{% endblock %}
+
+
+
+{% block main_block %}
+<div class="container" style="display: flex; justify-content: center;">
+    <div style="width: 600px; background: white; padding: 50px; border-radius: 15px; box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); text-align: center; margin: 50px auto; border: 2px solid #f4a261;">
+        <h1>Dim Sum Recipe</h1>
+        <img src="{% static 'images/dim_sum.jpg' %}" alt="Dim Sum Image">
+        <div class="dim_sum-ingredients">
+            <h2>Ingredients</h2>
+            <ul>
+                <li>1 cup shrimp</li>
+                <li>1/2 cup bamboo shoots</li>
+                <li>1 pack wonton wrappers</li>
+                <li>1 tbsp soy sauce</li>
+                <li>1 tsp sesame oil</li>
+            </ul>
+        </div>
+        <div class="dim_sum-steps">
+            <h2>Instructions</h2>
+            <ol>
+                <li>Chop shrimp and bamboo shoots finely.</li>
+                <li>Mix with soy sauce and sesame oil.</li>
+                <li>Place filling in wonton wrappers and fold into dumplings.</li>
+                <li>Steam for 10-12 minutes.</li>
+                <li>Serve with soy dipping sauce. Enjoy!</li>
+            </ol>
+        </div>
+        <div class="dim_sum-video">
+            <h2>Watch the Recipe Video</h2>
+            <iframe height="350" src="https://www.youtube.com/embed/Z4782sbYOKw" title="Vegetable Dim Sum | Sanjeev Kapoor Khazana" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,189 @@
+{% extends 'base.html' %}
+{% block title_block %}Breakfast Recipes - Bitey Bites{% endblock %}
+{% block main_block %}
+{% load static %}
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Breakfast Recipes - Bitey Bites</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        .breakfast-recipes {
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .breakfast-header {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: #333;
+        }
+
+        .recipe-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2rem;
+            padding: 1rem;
+        }
+
+        .recipe-card {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+            position: relative;
+        }
+
+        .recipe-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .recipe-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 10px 10px 0 0;
+        }
+
+        .recipe-content {
+            padding: 1rem;
+        }
+
+        .recipe-title {
+            font-size: 1.2rem;
+            margin: 0.5rem 0;
+            color: #333;
+        }
+
+        .recipe-meta {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .recipe-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem 1rem;
+        }
+
+        .view-recipe {
+            background-color: #f39c12;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+        }
+
+        .view-recipe:hover {
+            background-color: #e67e22;
+        }
+
+        .favorite-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1.5rem;
+            color: #ccc;
+            transition: color 0.3s ease;
+        }
+
+        .favorite-btn.active {
+            color: #e74c3c;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 2rem;
+            color: #666;
+        }
+    </style>
+</head>
+
+<body>
+
+    <section class="breakfast-recipes">
+        <div class="breakfast-header">
+            <h1>Delicious Breakfast Recipes</h1>
+        </div>
+        <div class="recipe-grid">
+            {% for recipe in breakfast_recipes %}
+            <div class="recipe-card">
+                {% if recipe.image_filename %}
+                <img src="{% static 'images/' %}{{ recipe.image_filename }}" alt="{{ recipe.title }}" />
+                {% else %}
+                <img src="{% static 'default_image.jpg' %}" alt="Default Image" class="recipe-image" />
+                {% endif %}
+                <div class="recipe-content">
+                    <h3 class="recipe-title">{{ recipe.title }}</h3>
+                    <div class="recipe-meta">
+                        <p><i class="fas fa-utensils"></i> {{ recipe.category }}</p>
+                        {% if recipe.occasion %}
+                        <p><i class="fas fa-calendar"></i> {{ recipe.occasion }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="recipe-actions">
+                    <a href="{% url 'recipe_detail' recipe.id %}" class="view-recipe">View Recipe</a>
+                    {% if request.user.is_authenticated %}
+                    <a href="{% url 'foodorder:checkout' recipe.id %}" class="view-recipe">Order Now</a>
+                    <button class="favorite-btn {% if recipe in request.user.wishlist.all %}active{% endif %}"
+                        data-recipe-id="{{ recipe.id }}">
+                        <i class="fas fa-heart"></i>
+                    </button>
+                    {% else %}
+                    <a href="{% url 'login'  %}" class="view-recipe">Order Now</a>
+                    <button class="favorite-btn {% if recipe in request.user.wishlist.all %}active{% endif %}"
+                        data-recipe-id="{{ recipe.id }}">
+                        <i class="fas fa-heart"></i>
+                    </button>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+            {% if not breakfast_recipes %}
+            <div class="empty-state">
+                <i class="fas fa-utensils fa-3x"></i>
+                <h2>No recipes available yet</h2>
+                <p>Check back soon for delicious recipe ideas!</p>
+            </div>
+            {% endif %}
+        </div>
+    </section>
+    <script>
+        $(document).ready(function () {
+            $(".favorite-btn").click(function () {
+                var button = $(this);
+                var recipeId = button.data("recipe-id");
+                $.ajax({
+                    url: "{% url 'add_to_wishlist' 0 %}".replace('0', recipeId),
+                    type: "POST",
+                    contentType: "application/json",
+                    headers: { "X-CSRFToken": "{{ csrf_token }}" },
+                    success: function (response) {
+                        if (response.status === "added") {
+                            button.addClass("active");
+                        } else if (response.status === "removed") {
+                            button.removeClass("active");
+                        }
+                    },
+                    error: function () {
+                        alert("An error occurred. Please try again.");
+                    },
+                });
+            });
+        });
+    </script>
+    {% endblock %}
+</body>
+
+</html>

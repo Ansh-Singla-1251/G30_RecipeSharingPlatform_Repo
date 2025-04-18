@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title_block %}Checkout{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'foodorder/foodorder.css' %}">
+{% endblock %}
+{% block main_block %}
+<div class="main">
+    <h2>Checkout</h2>
+    {% if cart_items %}
+    <h3>Order Summary</h3>
+    {% for item in cart_items %}
+    <div class="cart-item-summary">
+        <p>{{ item.recipe.title }} x {{ item.quantity }} - ${{ item.get_total_price }}</p>
+    </div>
+    {% endfor %}
+    <h4>Total: ${{ total }}</h4>
+    <a href="{% url 'foodorder:delivery_address' %}" class="btn btn-order"style="background-color: #f39c12;">Proceed to Delivery</a>
+    {% else %}
+    <p>No items in cart.</p>
+    {% endif %}
+</div>
+{% endblock %}

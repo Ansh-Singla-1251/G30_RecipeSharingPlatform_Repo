@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block main_block %}
+<div class="container mt-4">
+    <h2>Edit Recipe</h2>
+    <form method="POST" action="{% url 'edit_recipe' recipe_id=recipe.id %}" enctype="multipart/form-data">
+        {% csrf_token %}
+        {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert"
+            style="position: relative; padding-right: 3.5rem;">
+            <span class="message-text">{{ message }}</span>
+            <button type="button" class="btn-close custom-close-btn" aria-label="Close"
+                style="position: absolute; top: 50%; right: 1rem; transform: translateY(-50%); border: none; background: none; font-size: 1.5rem; cursor: pointer;"
+                data-bs-dismiss="alert">×</button>
+        </div>
+        {% endfor %}
+        {% endif %}
+        <div class="mb-3">
+            <label for="title" class="form-label">Title</label>
+            <input type="text" class="form-control" id="title" name="title" value="{{ recipe.title }}" required>
+        </div>
+        <div class="mb-3">
+            <label for="description" class="form-label">Description</label>
+            <textarea class="form-control" id="description" name="description"
+                required>{{ recipe.description }}</textarea>
+        </div>
+        <div class="mb-3">
+            <label for="ingredients" class="form-label">Ingredients</label>
+            <textarea class="form-control" id="ingredients" name="ingredients"
+                required>{{ recipe.ingredients }}</textarea>
+        </div>
+        <div class="mb-3">
+            <label for="instructions" class="form-label">Instructions</label>
+            <textarea class="form-control" id="instructions" name="instructions"
+                required>{{ recipe.instructions }}</textarea>
+        </div>
+        <div class="mb-3">
+            <label for="youtube_link" class="form-label">YouTube Link (Optional)</label>
+            <input type="url" class="form-control" id="youtube_link" name="youtube_link"
+                value="{{ recipe.youtube_link|default_if_none:'' }}">
+        </div>
+        <div class="mb-3">
+            <label for="image" class="form-label">Recipe Image</label>
+            <input class="form-control" type="file" id="image" name="image">
+            {% if recipe.image_filename %}
+            <img src="{% static 'images/'|add:recipe.image_filename %}" alt="{{ recipe.title }}" class="mt-2" style="max-width: 200px;">
+            {% endif %}
+        </div>
+        <div class="mb-3">
+            <label for="category" class="form-label">Category</label>
+            <select class="form-select" id="category" name="category" required>
+                <option value="Breakfast" {% if recipe.category == "Breakfast" %}selected{% endif %}>Breakfast</option>
+                <option value="Lunch" {% if recipe.category == "Lunch" %}selected{% endif %}>Lunch</option>
+                <option value="Dinner" {% if recipe.category == "Dinner" %}selected{% endif %}>Dinner</option>
+                <option value="Italian" {% if recipe.category == "Italian" %}selected{% endif %}>Italian</option>
+                <option value="Mexican" {% if recipe.category == "Mexican" %}selected{% endif %}>Mexican</option>
+                <option value="Chinese" {% if recipe.category == "Chinese" %}selected{% endif %}>Chinese</option>
+                <option value="Indian" {% if recipe.category == "Indian" %}selected{% endif %}>Indian</option>
+                <option value="Japanese" {% if recipe.category == "Japanese" %}selected{% endif %}>Japanese</option>
+                <option value="French" {% if recipe.category == "French" %}selected{% endif %}>French</option>
+                <option value="Thai" {% if recipe.category == "Thai" %}selected{% endif %}>Thai</option>
+                <option value="Mediterranean" {% if recipe.category == "Mediterranean" %}selected{% endif %}>Mediterranean</option>
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="is_vegetarian" class="form-label">Vegetarian</label>
+            <select class="form-select" id="is_vegetarian" name="is_vegetarian" required>
+                <option value="1" {% if recipe.is_vegetarian %}selected{% endif %}>Vegetarian</option>
+                <option value="0" {% if not recipe.is_vegetarian %}selected{% endif %}>Non-Vegetarian</option>
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="occasion" class="form-label">Occasion</label>
+            <input type="text" class="form-control" id="occasion" name="occasion"
+                value="{{ recipe.occasion|default_if_none:'' }}">
+        </div>
+        <div class="mb-3">
+            <label for="price" class="form-label">Price</label>
+            <input type="number" step="0.01" class="form-control" id="price" name="price" value="{{ recipe.price|default:'0.00' }}"
+                required>
+        </div>
+        <button type="submit" class="btn btn-primary">Update Recipe</button>
+    </form>
+</div>
+{% endblock %}
